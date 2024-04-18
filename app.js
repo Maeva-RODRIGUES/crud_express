@@ -1,62 +1,63 @@
-// Importation du module Express
-const express = require('express')
-
-// Initialisation de l'application Express
-const app = express()
-// Définition du port sur lequel l'application écoutera les requêtes
+// Définition du port sur lequel le serveur écoutera les requêtes entrantes
 const port = 3000
 
+// Importation des données des espaces de coworking à partir d'un fichier local
 const coworkingsData = require('./coworkings')
 
-// Définition des routes et des gestionnaires de requêtes pour l'application
+// Création d'une instance de l'application Express
+const app = require('express')()
 
-// Route racine de l'application
+// Middleware de journalisation qui enregistre l'heure de chaque requête
+app.use((req, res, next) => {
+    const now = new Date()
+    console.log(`${now.getHours()}h${now.getMinutes()}min${now.getSeconds()}s`) // Journalisation de l'heure de la requête
+    next() // Passe au middleware suivant dans la chaîne de traitement
+})
+
+// Définition des routes et des réponses correspondantes
+
+// Route racine
 app.get('/', (req, res) => {
-  res.send('Hello World!')  // Réponse renvoyée au client lorsqu'une requête GET est effectuée sur la route '/'
+    res.json({ message: 'Hello World!' }) // Répond avec un message JSON "Hello World!"
 })
 
-// Route pour l'API utilisateur
-app.get('/api/user', (req, res) => {
-    res.send('Hello Users !')  // Réponse renvoyée au client lorsqu'une requête GET est effectuée sur la route '/api/user'
-  })
-// Route pour l'API commentaire
-  app.get('/api/comment', (req, res) => {
-    res.send('Hello comment !')  // Réponse renvoyée au client lorsqu'une requête GET est effectuée sur la route '/api/comment'
+// Route pour les utilisateurs
+app.get('/api/users', (req, res) => {
+    res.json({ message: 'Hello utilisateur!' }) // Répond avec un message JSON "Hello utilisateur!"
 })
 
-// Route pour l'API coworkings
+// Route pour un utilisateur spécifique en fonction de son ID
+app.get('/api/users/:id', (req, res) => {
+    res.json({ message: `Utilisateur n°${req.params.id}` }) // Répond avec un message JSON contenant l'ID de l'utilisateur
+})
+
+// Route pour les commentaires
+app.get('/api/comments', (req, res) => {
+    res.json({ message: 'Hello Commentaire!' }) // Répond avec un message JSON "Hello Commentaire!"
+})
+
+// Route pour un commentaire spécifique en fonction de son ID
+app.get('/api/comments/:id', (req, res) => {
+    res.json({ message: `Commentaire n°${req.params.id}` }) // Répond avec un message JSON contenant l'ID du commentaire
+})
+
+// Route pour les espaces de coworking
 app.get('/api/coworkings', (req, res) => {
-    res.send('Hello toi !')  
+    res.json({ message: `Il y a ${coworkingsData.length} coworkings` }) // Répond avec un message JSON contenant le nombre d'espaces de coworking
 })
 
-// Définition d'une route avec un paramètre d'URL
-// Le paramètre ":id" dans l'URL permet de spécifier un identifiant unique pour récupérer des données spécifiques.
+// Route pour un espace de coworking spécifique en fonction de son ID
 app.get('/api/coworkings/:id', (req, res) => {
-    res.send(`Hello coworkers n°${req.params.id} !`)
-})
-
-app.get('/api/coworkings/:id', (req, res) => {
-    console.log(req.params.id)
-    // 12
-    // Nom du coworking n°12 : Oasis Coworking
+    // Recherche de l'espace de coworking correspondant à l'ID spécifié dans les données importées
     const result = coworkingsData.find((el) => {
         return el.id === parseInt(req.params.id)
     })
-
-    console.log(result)
-    res.send(`Nom du coworking n°${result.id} : ${result.name}`)
+    // Construction du message de réponse en fonction du résultat de la recherche
+    const msg = result ? `Nom du coworking n°${result.id} : ${result.name}` : `Le coworking recherché n'existe pas`
+    res.json({ message: msg }) // Répond avec un message JSON contenant le résultat de la recherche
 })
 
-
-app.get('/api/user/:id', (req, res) => {
-    res.send(`Hello user n°${req.params.id} !`)
-})
-
-app.get('/api/comment/:id', (req, res) => {
-    res.send(`Hello comment n°${req.params.id} !`)
-})
-
-// Configuration de l'application pour écouter les requêtes sur le port spécifié
+// Démarrage du serveur et écoute des requêtes entrantes sur le port spécifié
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)  // Message de console indiquant que l'application écoute sur le port spécifié
+    console.log(`Example app listening on port ${port}`) // Journalisation du démarrage du serveur avec le port utilisé
 })
