@@ -32,10 +32,21 @@ app.get('/api/coworkings', (req, res) => {
 // Définition d'une route avec un paramètre d'URL
 // Le paramètre ":id" dans l'URL permet de spécifier un identifiant unique pour récupérer des données spécifiques.
 app.get('/api/coworkings/:id', (req, res) => {
-    console.log(req)
-    // Renvoi d'une réponse au client avec le numéro d'identifiant récupéré depuis les paramètres de l'URL
     res.send(`Hello coworkers n°${req.params.id} !`)
 })
+
+app.get('/api/coworkings/:id', (req, res) => {
+    console.log(req.params.id)
+    // 12
+    // Nom du coworking n°12 : Oasis Coworking
+    const result = coworkingsData.find((el) => {
+        return el.id === parseInt(req.params.id)
+    })
+
+    console.log(result)
+    res.send(`Nom du coworking n°${result.id} : ${result.name}`)
+})
+
 
 app.get('/api/user/:id', (req, res) => {
     res.send(`Hello user n°${req.params.id} !`)
