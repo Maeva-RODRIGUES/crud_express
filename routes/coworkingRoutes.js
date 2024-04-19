@@ -8,17 +8,13 @@ router
     .get((req, res) => {
         res.json({ message: `Il y a ${coworkingsData.length} coworkings`, data: coworkingsData })
     })
-    .post((req, res) => {
-        // const newCoworking = req.body
-        // const newId = on récupère le dernier élément du tableau, on prend son id, on lui ajoute 1 et on met ça dans newId 
-        // const newId = coworkingsData[coworkingsData.length - 1].id + 1
-        // newCoworking.id = newId
-        // newCoworking.created = new Date()
-        // // Ajoutons une date à la création du coworking
-        // coworkingsData.push(newCoworking)
-
-        Coworking.create({ name: req.body.name, superficy: req.body.superficy, capacity: req.body.capacity })
-        res.json({ message: `Un coworking a bien été ajouté`, data: "" })
+    .post(async (req, res) => {
+        try {
+            const newCoworking = await Coworking.create(req.body)
+            res.json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
+        } catch (error) {
+            res.json({ message: `Une erreur est survenue`, data: error })
+        }
     })
 
 router
