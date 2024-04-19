@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const coworkingsData = require('../coworkings')
+const { Coworking } = require('../db/sequelizeSetup')
 
 router
     .route('/')
@@ -8,15 +9,16 @@ router
         res.json({ message: `Il y a ${coworkingsData.length} coworkings`, data: coworkingsData })
     })
     .post((req, res) => {
-        const newCoworking = req.body
+        // const newCoworking = req.body
         // const newId = on récupère le dernier élément du tableau, on prend son id, on lui ajoute 1 et on met ça dans newId 
-        const newId = coworkingsData[coworkingsData.length - 1].id + 1
-        newCoworking.id = newId
-        newCoworking.created = new Date()
-        // Ajoutons une date à la création du coworking
-        coworkingsData.push(newCoworking)
+        // const newId = coworkingsData[coworkingsData.length - 1].id + 1
+        // newCoworking.id = newId
+        // newCoworking.created = new Date()
+        // // Ajoutons une date à la création du coworking
+        // coworkingsData.push(newCoworking)
 
-        res.json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
+        Coworking.create({ name: req.body.name, superficy: req.body.superficy, capacity: req.body.capacity })
+        res.json({ message: `Un coworking a bien été ajouté`, data: "" })
     })
 
 router

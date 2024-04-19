@@ -1,20 +1,19 @@
-const { Sequelize, DataTypes } = require('sequelize');
-// const sequelize = new Sequelize('sqlite::memory:');
-// const bdd = new Sequelize('mariadb:');
-// const bdd2 = new Sequelize('postgres');
+const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
     return sequelize.define(
-        'User',
+        'Coworking',
         {
             // Model attributes are defined here
-            firstName: {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            lastName: {
-                type: DataTypes.STRING,
-                // allowNull defaults to true
+            superficy: {
+                type: DataTypes.INTEGER,
+            },
+            capacity: {
+                type: DataTypes.INTEGER,
             },
         },
         {
