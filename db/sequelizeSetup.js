@@ -2,7 +2,7 @@
 const { Sequelize } = require('sequelize');
 
 // Option: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('bordeaux_coworkings', 'root', '', {
+const sequelize = new Sequelize('bx_coworkings', 'root', '', {
     host: 'localhost',
     dialect: 'mariadb',
     logging: false
@@ -13,4 +13,8 @@ sequelize.authenticate()
     .catch(error => console.error(`Impossible de se connecter à la base de données ${error}`))
 // 
 
-module.exports = { sequelize }
+const myFunction = (name) => {
+    console.log('hello ' + name)
+}
+
+module.exports = { sequelize, myFunction }

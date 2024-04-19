@@ -1,6 +1,6 @@
 # 💻Coworking
 
-[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=Création+d'une+API+Rest;+sur+un+espace+de+coworking+dans;+le+cadre+de+ma+formation+de+développeur+web.)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=Création+d'une+API+Rest;+sur+un+espace+de+coworking+dans;+le+cadre+de+ma+formation;+de+développeur+web.)](https://git.io/typing-svg)
 
 Création d'une API Rest sur un espace de coworking dans le cadre de ma formation de développeur web.
 
