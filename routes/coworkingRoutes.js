@@ -40,13 +40,19 @@ router
     })
     .delete((req, res) => {
         // on identifie la bonne ligne du tableau et on supprime l'élément s'il existe
-        let filteredArray = coworkingsData.filter(el => {
-            return el.id !== parseInt(req.params.id)
+        // let filteredArray = coworkingsData.filter(el => {
+        //     return el.id !== parseInt(req.params.id)
+        // })
+
+        // coworkingsData = filteredArray
+
+        const index = coworkingsData.findIndex((el) => {
+            return el.id === parseInt(req.params.id)
         })
 
-        coworkingsData = filteredArray
+        coworkingsData.splice(index, 1)
 
-        res.json({ message: 'delete coworking' })
+        res.json({ message: 'delete coworking', data: coworkingsData })
     })
 
 module.exports = router
