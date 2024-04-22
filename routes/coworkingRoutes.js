@@ -1,26 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const coworkingsData = require('../coworkings')
 const { Coworking } = require('../db/sequelizeSetup')
+const { findAllCoworkings, createCoworking } = require('../controllers/coworkingControllers')
 
 router
     .route('/')
-    .get(async (req, res) => {
-        try {
-            const results = await Coworking.findAll()
-            res.json({ message: `Il y a ${results.length} coworkings`, data: results })
-        } catch (error) {
-            res.status(500).json({ message: `Une erreur est survenue` })
-        }
-    })
-    .post(async (req, res) => {
-        try {
-            const newCoworking = await Coworking.create(req.body)
-            res.status(201).json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
-        } catch (error) {
-            res.status(500).json({ message: `Une erreur est survenue`, data: error })
-        }
-    })
+    .get(findAllCoworkings)
+    .post(createCoworking)
 
 router
     .route('/:id')

@@ -4,14 +4,17 @@ const CoworkingModel = require('../models/coworkingModel')
 const mockCoworkings = require('../coworkings')
 
 // Option: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('bdx_coworkings', 'root', '', {
+const sequelize = new Sequelize('bx_coworkings', 'root', '', {
     host: 'localhost',
     dialect: 'mariadb',
     logging: false
 });
 
-const Coworking = CoworkingModel(sequelize)
+const Coworking = CoworkingModel(sequelize);
 
+// (() => {
+
+// })()
 sequelize.sync({ force: true })
     .then(() => {
         mockCoworkings.forEach(coworking => {
