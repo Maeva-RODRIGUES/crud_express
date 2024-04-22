@@ -15,6 +15,12 @@ module.exports = (sequelize) => {
             capacity: {
                 type: DataTypes.INTEGER,
             },
+            price: {
+                type: DataTypes.JSON,
+            },
+            address: {
+                type: DataTypes.JSON,
+            },
         },
         {
             // Other model options go here
