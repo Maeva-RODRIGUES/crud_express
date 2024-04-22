@@ -5,9 +5,18 @@ const { Coworking } = require('../db/sequelizeSetup')
 
 router
     .route('/')
-    .get((req, res) => {
-        res.json({ message: `Il y a ${coworkingsData.length} coworkings`, data: coworkingsData })
+    .get(async (req, res) => {
+       try {
+         // Récupère tous les enregistrements de la table Coworking
+        const results = await Coworking.findAll ();
+         // Envoie une réponse JSON réussie avec les données des coworkings = SUCCES
+        res.json({ message: `Il y a ${results.length} coworkings`, data: results })
+        // Envoie une réponse JSON en cas d'erreur avec le message d'erreur = FAILURE
+       } catch (error) {
+        res.json({ message: `Une erreur est survenue`, data: error })
+       }
     })
+
     .post(async (req, res) => {
         try {
             const newCoworking = await Coworking.create(req.body)
@@ -19,23 +28,29 @@ router
 
 router
     .route('/:id')
-    .get((req, res) => {
-        const result = coworkingsData.find((el) => {
-            return el.id === parseInt(req.params.id)
-        })
-
-        const msg = result ? `Nom du coworking n°${result.id} : ${result.name}` : `Le coworking recherché n'existe pas`
-
+    .get(async(req, res) => {
+        try{
+        const result = await Coworking.findByPk(req.params.id);
         res.json({ message: msg, data: result })
-    })
-    .put((req, res) => {
-        const result = coworkingsData.find((el) => {
-            return el.id === parseInt(req.params.id)
+
+        } catch (error) {
+            res.json({ message: `Une erreur est survenue`, data: error })
+        }
         })
 
-        result.superficy = req.body.superficy
-        res.json({ message: 'Le coworking a bien été modifié', data: result })
-    })
+        .put(async (req, res) => {
+            try {
+                const result = await Coworking.findByPk(req.params.id);
+                if (!result) {
+                    return res.json({ message: `Le coworking n'existe pas` })
+                }
+                result.update(req.body)
+                res.json({ message: 'Coworking modifié', data: result })
+            } catch (error) {
+                res.json({ message: `Une erreur est survenue` })
+            }
+        })
+
     .delete((req, res) => {
         // on identifie la bonne ligne du tableau et on supprime l'élément s'il existe
         // let filteredArray = coworkingsData.filter(el => {
