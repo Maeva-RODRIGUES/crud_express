@@ -8,12 +8,29 @@ module.exports = (sequelize) => {
             name: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                unique: true,
+                validate: {
+                    len: {
+                        msg: "Le nom doit avoir un nombre de caractères compris entre 3 et 50.",
+                        args: [3, 50]
+                    }
+                },
             },
             superficy: {
                 type: DataTypes.INTEGER,
+                validate: {
+                    isInt: {
+                        msg: "La superficie doit être un entier.",
+                    }
+                },
             },
             capacity: {
                 type: DataTypes.INTEGER,
+                validate: {
+                    isInt: {
+                        msg: "La capacité doit être un entier.",
+                    }
+                },
             },
             price: {
                 type: DataTypes.JSON,
