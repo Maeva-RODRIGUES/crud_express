@@ -1,10 +1,27 @@
-const { UniqueConstraintError, ValidationError } = require('sequelize')
+const { UniqueConstraintError, ValidationError, Op } = require('sequelize')
 const { Coworking } = require('../db/sequelizeSetup')
 
 const findAllCoworkings = async (req, res) => {
+    // A l'aide de req.query, on ajoute une fonction de recherche de Coworking sur critère du nom
     try {
         const results = await Coworking.findAll()
         res.json({ message: `Il y a ${results.length} coworkings`, data: results })
+    } catch (error) {
+        res.status(500).json({ message: `Une erreur est survenue` })
+    }
+}
+
+const searchCoworkings = async (req, res) => {
+    // A l'aide de req.query, on ajoute une fonction de recherche de Coworking sur critère du nom
+    try {
+        const results = await Coworking.findAll(
+            {
+                where:
+                    { name: { [Op.like]: `%${req.query.name}%` } }
+            }
+        )
+        res.json({ message: `Il y a ${results.length} coworkings`, data: results })
+
     } catch (error) {
         res.status(500).json({ message: `Une erreur est survenue` })
     }
@@ -64,5 +81,10 @@ const deleteCoworking = async (req, res) => {
 }
 
 module.exports = {
-    findAllCoworkings, createCoworking, findCoworkingByPk, updateCoworking, deleteCoworking
+    findAllCoworkings,
+    createCoworking,
+    findCoworkingByPk,
+    updateCoworking,
+    deleteCoworking,
+    searchCoworkings
 }

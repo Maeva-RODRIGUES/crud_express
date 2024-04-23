@@ -44,7 +44,6 @@ module.exports = (sequelize) => {
                         } else {
                             throw new Error("La syntaxe du prix n'est pas correcte.");
                         }
-
                     },
                 }
             },
