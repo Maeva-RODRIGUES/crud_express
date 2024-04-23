@@ -32,8 +32,21 @@ module.exports = (sequelize) => {
                     }
                 },
             },
+            // implémenter une custom validation, au moins un des 3 prix doit être renseigné
             price: {
                 type: DataTypes.JSON,
+                validate: {
+                    isPriceValid(value) {
+                        if (value.hasOwnProperty("hour") && value.hasOwnProperty("day") && value.hasOwnProperty("month")) {
+                            if (value.hour === null && value.day === null && value.month === null) {
+                                throw new Error("Le prix n'est pas valide");
+                            }
+                        } else {
+                            throw new Error("La syntaxe du prix n'est pas correcte.");
+                        }
+
+                    },
+                }
             },
             address: {
                 type: DataTypes.JSON,
