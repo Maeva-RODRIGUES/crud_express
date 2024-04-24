@@ -1,5 +1,5 @@
-const { UniqueConstraintError, ValidationError, Op } = require('sequelize')
 const { Coworking } = require('../db/sequelizeSetup')
+const { errorValidationConstraint } = require('../errorHandler/errorValidationConstraint')
 
 const findAllCoworkings = async (req, res) => {
     // A l'aide de req.query, on ajoute une fonction de recherche de Coworking sur critère du nom
@@ -44,13 +44,7 @@ const createCoworking = async (req, res) => {
         const newCoworking = await Coworking.create(req.body)
         res.status(201).json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
     } catch (error) {
-        if (error instanceof UniqueConstraintError) {
-            return res.status(400).json({ message: "Le nom est déjà pris" })
-        }
-        if (error instanceof ValidationError) {
-            return res.status(400).json({ message: error.message })
-        }
-        res.status(500).json({ message: "Une erreur est survenue" })
+        errorValidationConstraint(error, res, "Nom de coworking")
     }
 }
 
@@ -60,10 +54,10 @@ const updateCoworking = async (req, res) => {
         if (!result) {
             return res.status(404).json({ message: `Le coworking n'existe pas` })
         }
-        result.update(req.body)
+        await result.update(req.body)
         res.status(201).json({ message: 'Coworking modifié', data: result })
     } catch (error) {
-        res.status(500).json({ message: `Une erreur est survenue` })
+        errorValidationConstraint(error, res, "Nom de coworking")
     }
 }
 
