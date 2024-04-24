@@ -1,4 +1,4 @@
-// CONFIG MARIA DB
+// CONFIG DB
 const { Sequelize } = require('sequelize');
 const CoworkingModel = require('../models/coworkingModel')
 const mockCoworkings = require('../coworkings')

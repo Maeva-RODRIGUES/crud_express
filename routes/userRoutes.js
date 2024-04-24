@@ -1,16 +1,17 @@
 const express = require('express')
+const { findAllUsers, findUserByPk, createUser } = require('../controllers/userController')
 const router = express.Router()
 
 router
     .route('/')
-    .get((req, res) => {
-        res.json({ message: 'Hello utilisateur!' })
-    })
+    .get(findAllUsers)
+
+router
+    .route('/signup')
+    .post(createUser)
 
 router
     .route('/:id')
-    .get((req, res) => {
-        res.json({ message: `Utilisateur n°${req.params.id}` })
-    })
+    .get(findUserByPk)
 
 module.exports = router

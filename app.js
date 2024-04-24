@@ -6,8 +6,8 @@ const port = 5000
 require("./db/sequelizeSetup")
 
 app
-    .use(morgan('dev'))
     .use(express.json())
+    .use(morgan('dev'))
 
 const coworkingRouter = require('./routes/coworkingRoutes')
 const userRouter = require('./routes/userRoutes')
@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
 app.use('/api/coworkings', coworkingRouter)
 app.use('/api/users', userRouter)
 app.use('/api/reviews', reviewRouter)
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
