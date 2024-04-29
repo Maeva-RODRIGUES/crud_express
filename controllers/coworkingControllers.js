@@ -1,5 +1,5 @@
 const { Coworking } = require('../db/sequelizeSetup')
-const { errorValidationConstraint } = require('../errorHandler/errorValidationConstraint')
+const { errorHandler } = require('../errorHandler/errorHandler')
 
 const findAllCoworkings = async (req, res) => {
     // A l'aide de req.query, on ajoute une fonction de recherche de Coworking sur critère du nom
@@ -7,7 +7,7 @@ const findAllCoworkings = async (req, res) => {
         const results = await Coworking.findAll()
         res.json({ message: `Il y a ${results.length} coworkings`, data: results })
     } catch (error) {
-        res.status(500).json({ message: `Une erreur est survenue` })
+        errorHandler(error, res)
     }
 }
 
@@ -23,7 +23,7 @@ const searchCoworkings = async (req, res) => {
         res.json({ message: `Il y a ${results.length} coworkings`, data: results })
 
     } catch (error) {
-        res.status(500).json({ message: `Une erreur est survenue` })
+        errorHandler(error, res)
     }
 }
 
@@ -35,16 +35,17 @@ const findCoworkingByPk = async (req, res) => {
         }
         res.json({ message: 'Coworking trouvé', data: result })
     } catch (error) {
-        res.status(500).json({ message: `Une erreur est survenue` })
+        errorHandler(error, res)
     }
 }
 
 const createCoworking = async (req, res) => {
+    // Si on a un token valide dans les cookies du client, alors on a le droit de créer un coworking
     try {
         const newCoworking = await Coworking.create(req.body)
         res.status(201).json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
     } catch (error) {
-        errorValidationConstraint(error, res, "Nom de coworking")
+        errorHandler(error, res)
     }
 }
 
@@ -57,7 +58,7 @@ const updateCoworking = async (req, res) => {
         await result.update(req.body)
         res.status(201).json({ message: 'Coworking modifié', data: result })
     } catch (error) {
-        errorValidationConstraint(error, res, "Nom de coworking")
+        errorHandler(error, res)
     }
 }
 
@@ -70,7 +71,7 @@ const deleteCoworking = async (req, res) => {
         result.destroy()
         res.status(200).json({ message: 'Coworking supprimé', data: result })
     } catch (error) {
-        res.status(500).json({ message: `Une erreur est survenue` })
+        errorHandler(error, res)
     }
 }
 

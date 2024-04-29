@@ -18,10 +18,30 @@ module.exports = (sequelize) => {
             },
             password: {
                 type: DataTypes.STRING
+            },
+            address: {
+                type: DataTypes.JSON
+            },
+            // validation de mail
+            email: {
+                type: DataTypes.STRING,
+                unique: true,
+                validate: {
+                    isEmail: {
+                        msg: "email incorrect",
+                    }
+                },
             }
         },
         {
-            // Other model options go here
+            defaultScope: {
+                attributes: { exclude: ['password'] }
+            },
+            scopes: {
+                withPassword: {
+                    attributes: {}
+                }
+            }
         },
     );
 }
