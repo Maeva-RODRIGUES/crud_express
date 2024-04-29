@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../configs/privatekey');
 const { User } = require('../db/sequelizeSetup');
 
-
 const protect = async (req, res, next) => {
     // 1. On vérifie la présence du token
     const token = req.cookies.access_token
@@ -16,9 +15,8 @@ const protect = async (req, res, next) => {
 
         // On vérifie que l'id contenu dans le token correspond toujours à un utilisateur dans la bdd
         const result = await User.findByPk(decoded.userId)
-        // console.log(result)
         if (!result) {
-            return res.status(404).json({ message: `L'utilisateur n'existe pas` })
+            return res.status(404).json({ message: `Vous n'êtes pas authentifié` })
         }
 
         req.userId = decoded.userId
@@ -26,6 +24,10 @@ const protect = async (req, res, next) => {
     } catch (error) {
         return res.status(401).json({ message: "Jeton non valide" })
     }
+}
+
+const restrictTo = () => {
+
 }
 
 module.exports = { protect }

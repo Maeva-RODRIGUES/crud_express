@@ -4,12 +4,17 @@
   "description": "crud",
   "main": "app.js",
   "scripts": {
-    "start": "npx nodemon app.js"
+    "start": "npx nodemon app.js",
+    "debug": "node --inspect=0.0.0.0:9229 app.js"
   },
   "author": "Maëva Rodrigues",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "config": "^3.3.11",
+    "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.3.0",
     "morgan": "^1.10.0",
     "sequelize": "^6.37.3"
