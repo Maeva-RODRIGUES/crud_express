@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../configs/privatekey');
-const { User } = require('../db/sequelizeSetup');
+const { User, Role } = require('../db/sequelizeSetup');
+const { errorHandler } = require('../errorHandler/errorHandler');
 
 const protect = async (req, res, next) => {
     // 1. On vérifie la présence du token
@@ -26,8 +27,23 @@ const protect = async (req, res, next) => {
     }
 }
 
-const restrictTo = () => {
+const restrictTo = (labelRole) => {
+    return async (req, res, next) => {
+        try {
+            // 1. on récupère l'utilisateur courant grace au req.userId
+            const result = await User.findByPk(req.userId);
+            // 2. on compare le role de l'utilisateur courant avec le role passé en paramètre
+            // User.findByPk(req.userId)
+            const role = await Role.findByPk(result.RoleId)
+            if (role.label !== labelRole) {
+                return res.status(403).json({ message: "Droits insuffisants" })
+            }
 
+            next()
+        } catch (error) {
+            errorHandler(error)
+        }
+    }
 }
 
-module.exports = { protect }
+module.exports = { protect, restrictTo }

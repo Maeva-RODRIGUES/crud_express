@@ -1,7 +1,7 @@
 const express = require('express')
 const { findAllUsers, findUserByPk, createUser, updateProfile, updateUser, deleteUser, deleteProfile } = require('../controllers/userController')
 const { login, logout } = require('../controllers/authController')
-const { protect } = require('../middlewares/auth')
+const { protect, restrictTo } = require('../middlewares/auth')
 const router = express.Router()
 
 router
@@ -28,7 +28,7 @@ router
 router
     .route('/:id')
     .get(findUserByPk)
-    .put(protect, updateUser) // restrictTo('superadmin')
-    .delete(protect, deleteUser) // restrictTo('superadmin')
+    .put(protect, restrictTo('admin'), updateUser)
+    .delete(protect, restrictTo("superadmin"), deleteUser)
 
 module.exports = router
