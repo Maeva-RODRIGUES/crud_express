@@ -34,13 +34,23 @@ module.exports = (sequelize) => {
             }
         },
         {
+            // Par défaut, tous les getters/finders n'ont plus l'attribut password (server -> client), attention aux méthodes qui mettent à jour/créent un password (client -> server)
             defaultScope: {
                 attributes: { exclude: ['password'] }
             },
+            // L'unique besoin d'un password en get, c'est pour la route login, car on compare le password en bdd avec les données du req.body
             scopes: {
                 withPassword: {
                     attributes: {}
                 }
+            },
+            hooks: {
+                afterCreate: (record) => {
+                    delete record.dataValues.password;
+                },
+                afterUpdate: (record) => {
+                    delete record.dataValues.password;
+                },
             }
         },
     );
