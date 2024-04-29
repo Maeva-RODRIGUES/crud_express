@@ -6,7 +6,7 @@ const router = express.Router()
 
 router
     .route('/')
-    .get(findAllUsers)
+    .get(protect,restrictTo('admin'), findAllUsers)
 
 router
     .route('/signup')
@@ -27,7 +27,7 @@ router
 
 router
     .route('/:id')
-    .get(findUserByPk)
+    .get(protect,restrictTo('admin'),findUserByPk)
     .put(protect, restrictTo('admin'), updateUser)
     .delete(protect, restrictTo('superadmin'), deleteUser)
 
