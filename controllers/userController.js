@@ -2,12 +2,27 @@ const { User, Role } = require("../db/sequelizeSetup")
 const bcrypt = require('bcrypt');
 const { errorHandler } = require("../errorHandler/errorHandler")
 
-const findAllUsers = (req, res) => {
-    res.json({ message: 'Hello utilisateur!' })
+const findAllUsers = async (req, res) => {
+    // try {
+    //     const result = await User.findAll()
+    //     res.json({ data: result })
+    // } catch (error) {
+    //     errorHandler(error, res)
+    // }
+    res.json({})
 }
 
-const findUserByPk = (req, res) => {
-    res.json({ message: `Utilisateur n°${req.params.id}` })
+const findUserByPk = async (req, res) => {
+    // try {
+    //     const result = await User.findByPk(req.params.id, { include: Role })
+    //     if (!result) {
+    //         return res.json({ message: 'Utilisateur non trouvé' })
+    //     }
+    //     res.json({ data: result })
+    // } catch (error) {
+    //     errorHandler(error, res)
+    // }
+    res.json({})
 }
 
 const createUser = async (req, res) => {
@@ -38,9 +53,9 @@ const updateUser = async (req, res) => {
             req.body.password = hash
         }
 
-        // On évite l'attribution d'un droit supérieur à ses propres droits
+        // On évite l'attribution d'un droit supérieur à ses propres droits et la modification d'un utilisateur supérieur
         if (req.body.RoleId) {
-            if (req.body.RoleId < req.user.RoleId) return res.status(403).json({ message: "Droits insuffisants pour mise à jour" })
+            if (result.RoleId < req.user.RoleId || req.body.RoleId < req.user.RoleId) return res.status(403).json({ message: "Droits insuffisants pour mise à jour" })
         }
 
         await result.update(req.body)
