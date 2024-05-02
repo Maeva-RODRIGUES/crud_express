@@ -1,5 +1,3 @@
-// configs/privatekey.js
+const SECRET_KEY = "5rM7Cz)@I]N(/=|=rmNr^6kmEiDMG^"
 
-const privateKey = "votre_clé_privée";
-
-module.exports = privateKey;
+module.exports = { SECRET_KEY }

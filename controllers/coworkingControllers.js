@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { Coworking } = require('../db/sequelizeSetup')
 const { errorHandler } = require('../errorHandler/errorHandler')
 

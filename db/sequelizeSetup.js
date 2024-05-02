@@ -7,12 +7,14 @@ const RoleModel = require('../models/roleModel')
 const mockCoworkings = require('./coworkings');
 const mockUsers = require('./users');
 const reviewModel = require('../models/reviewModel');
+const env = process.env.NODE_ENV;
+const config = require('../configs/db-config.json')[env];
 
 
 // Option: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('bdx_coworkings', 'root', '', {
-    host: 'localhost',
-    dialect: 'mariadb',
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    dialect: config.dialect,
     logging: false
 });
 
@@ -46,29 +48,31 @@ User.hasMany(Review, {
 })
 Review.belongsTo(User)
 
-sequelize.sync({ force: true })
+const resetDb = process.env.NODE_ENV === "development"
+
+sequelize.sync({ force: resetDb })
     .then(() => {
-        mockCoworkings.forEach(coworking => {
-            Coworking.create(coworking)
-                .then()
-                .catch(error => {
-                    console.log(error)
-                })
-        })
+        // mockCoworkings.forEach(coworking => {
+        //     Coworking.create(coworking)
+        //         .then()
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        // })
 
-        Role.create({ id: 1, label: "superadmin" })
-        Role.create({ id: 2, label: "admin" })
-        Role.create({ id: 3, label: "user" })
+        // Role.create({ id: 1, label: "superadmin" })
+        // Role.create({ id: 2, label: "admin" })
+        // Role.create({ id: 3, label: "user" })
 
-        mockUsers.forEach(async user => {
-            const hash = await bcrypt.hash(user.password, 10)
-            user.password = hash
-            User.create(user)
-                .then()
-                .catch(error => {
-                    console.log(error)
-                })
-        })
+        // mockUsers.forEach(async user => {
+        //     const hash = await bcrypt.hash(user.password, 10)
+        //     user.password = hash
+        //     User.create(user)
+        //         .then()
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        // })
     })
     .catch((error) => {
         console.log(error)
