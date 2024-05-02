@@ -1,5 +1,5 @@
-const { Op } = require('sequelize')
-const { Coworking } = require('../db/sequelizeSetup')
+const { Op, QueryTypes } = require('sequelize')
+const { Coworking, sequelize } = require('../db/sequelizeSetup')
 const { errorHandler } = require('../errorHandler/errorHandler')
 
 const findAllCoworkings = async (req, res) => {
@@ -8,6 +8,19 @@ const findAllCoworkings = async (req, res) => {
         const results = await Coworking.findAll()
         res.json({ message: `Il y a ${results.length} coworkings`, data: results })
     } catch (error) {
+        errorHandler(error, res)
+    }
+}
+
+// On utilise la méthode sequelize.query() pour écrire une requête SQL en dur, SELECT name, rating FROM Coworking
+const findAllCoworkingsRawSQL = async (req, res) => {
+    try {
+        const result = await sequelize.query("SELECT name, rating FROM coworkings LEFT JOIN reviews ON coworkings.id = reviews.CoworkingId", {
+            type: QueryTypes.SELECT,
+        })
+        res.json({ data: result })
+    } catch (error) {
+        console.log(error)
         errorHandler(error, res)
     }
 }
@@ -42,6 +55,7 @@ const findCoworkingByPk = async (req, res) => {
 
 const createCoworking = async (req, res) => {
     try {
+        req.body.UserId = req.user.id
         const newCoworking = await Coworking.create(req.body)
         res.status(201).json({ message: `Un coworking a bien été ajouté`, data: newCoworking })
     } catch (error) {
@@ -81,5 +95,6 @@ module.exports = {
     findCoworkingByPk,
     updateCoworking,
     deleteCoworking,
-    searchCoworkings
+    searchCoworkings,
+    findAllCoworkingsRawSQL
 }

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { protect } = require('../middlewares/auth')
+const { protect, restrictToOwnUser } = require('../middlewares/auth')
 const { createReview, findAllReviews, findReviewByPk, updateReview, deleteReview } = require('../controllers/reviewController')
 
 router
@@ -11,7 +11,7 @@ router
 router
     .route('/:id')
     .get(findReviewByPk)
-    .put(protect, updateReview)
-    .delete(protect, deleteReview)
+    .put(protect, restrictToOwnUser, updateReview)
+    .delete(protect, restrictToOwnUser, deleteReview)
 
 module.exports = router

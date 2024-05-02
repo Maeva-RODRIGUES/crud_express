@@ -38,7 +38,6 @@ const coworkings = [
         created: new Date()
     },
     {
-
         name: "Start-Way",
         price: { "hour": 6, "day": 36, "month": null },
         address: { "number": "39", "street": "rue du Château d'Eau", "postCode": 33000, "city": "Bordeaux" },

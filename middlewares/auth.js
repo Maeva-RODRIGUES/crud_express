@@ -47,4 +47,10 @@ const restrictTo = (labelRole) => {
     }
 }
 
-module.exports = { protect, restrictTo }
+const restrictToOwnUser = (req, res, next) => {
+    // On va tester si l'utilisateur qui tente de faire une requête est bien l'auteur de la ressource
+    
+
+}
+
+module.exports = { protect, restrictTo, restrictToOwnUser }

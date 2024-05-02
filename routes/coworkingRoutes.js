@@ -6,13 +6,19 @@ const {
     findCoworkingByPk,
     updateCoworking,
     deleteCoworking,
-    searchCoworkings } = require('../controllers/coworkingControllers')
-const { protect } = require('../middlewares/auth')
+    searchCoworkings,
+    findAllCoworkingsRawSQL } = require('../controllers/coworkingControllers')
+const { protect, restrictToOwnUser } = require('../middlewares/auth')
+const { Coworking } = require('../db/sequelizeSetup')
 
 router
     .route('/')
     .get(findAllCoworkings)
     .post(protect, createCoworking)
+
+router
+    .route('/rawSQL')
+    .get(findAllCoworkingsRawSQL)
 
 router
     .route('/search')
@@ -21,7 +27,7 @@ router
 router
     .route('/:id')
     .get(findCoworkingByPk)
-    .put(protect, updateCoworking)
-    .delete(protect, deleteCoworking)
+    .put(protect, restrictToOwnUser(Coworking), updateCoworking)
+    .delete(protect, restrictToOwnUser(Coworking), deleteCoworking)
 
 module.exports = router
