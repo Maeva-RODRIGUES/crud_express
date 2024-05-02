@@ -1,6 +1,3 @@
-// label : superadmin, admin, user
-// id : 1, 2, 3
-
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {

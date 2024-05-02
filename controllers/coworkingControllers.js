@@ -40,7 +40,6 @@ const findCoworkingByPk = async (req, res) => {
 }
 
 const createCoworking = async (req, res) => {
-    // Si on a un token valide dans les cookies du client, alors on a le droit de créer un coworking
     try {
         const newCoworking = await Coworking.create(req.body)
         res.status(201).json({ message: `Un coworking a bien été ajouté`, data: newCoworking })

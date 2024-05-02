@@ -1,16 +1,17 @@
 const express = require('express')
 const router = express.Router()
+const { protect } = require('../middlewares/auth')
+const { createReview, findAllReviews, findReviewByPk, updateReview, deleteReview } = require('../controllers/reviewController')
 
 router
     .route('/')
-    .get((req, res) => {
-        res.json({ message: 'Hello Commentaire!' })
-    })
+    .get(findAllReviews)
+    .post(protect, createReview)
 
 router
     .route('/:id')
-    .get((req, res) => {
-        res.json({ message: `Commentaire n°${req.params.id}` })
-    })
+    .get(findReviewByPk)
+    .put(protect, updateReview)
+    .delete(protect, deleteReview)
 
 module.exports = router
