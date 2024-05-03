@@ -50,6 +50,9 @@ module.exports = (sequelize) => {
             address: {
                 type: DataTypes.JSON,
             },
+            imageUrl: {
+                type: DataTypes.STRING,
+            },
         },
         {
             // Other model options go here

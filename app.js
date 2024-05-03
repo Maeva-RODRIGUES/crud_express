@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const path = require('path');
 
 const app = express()
 
@@ -32,6 +33,13 @@ app.get('/', (req, res) => {
 app.use('/api/coworkings', coworkingRouter)
 app.use('/api/users', userRouter)
 app.use('/api/reviews', reviewRouter)
+
+// route de fichiers static
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+app.get('*', (req, res) => {
+    res.status(404).json({ message: "Page not found" })
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

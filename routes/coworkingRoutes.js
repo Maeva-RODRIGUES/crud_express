@@ -7,9 +7,11 @@ const {
     updateCoworking,
     deleteCoworking,
     searchCoworkings,
-    findAllCoworkingsRawSQL } = require('../controllers/coworkingControllers')
+    findAllCoworkingsRawSQL,
+    createCoworkingWithImg } = require('../controllers/coworkingControllers')
 const { protect, restrictToOwnUser } = require('../middlewares/auth')
 const { Coworking } = require('../db/sequelizeSetup')
+const multer = require('../middlewares/multer-config')
 
 router
     .route('/')
@@ -19,6 +21,10 @@ router
 router
     .route('/rawSQL')
     .get(findAllCoworkingsRawSQL)
+
+router
+    .route('/withImg')
+    .post(protect, multer, createCoworkingWithImg)
 
 router
     .route('/search')

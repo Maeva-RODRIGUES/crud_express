@@ -47,10 +47,21 @@ const restrictTo = (labelRole) => {
     }
 }
 
-const restrictToOwnUser = (req, res, next) => {
-    // On va tester si l'utilisateur qui tente de faire une requête est bien l'auteur de la ressource
-    
+const restrictToOwnUser = (resource) => {
+    return (req, res, next) => {
+        // Vérifiez si l'utilisateur est authentifié
+        if (!req.user) {
+            return res.status(401).json({ message: "Vous devez être connecté pour effectuer cette action." });
+        }
 
-}
+        // Vérifiez si l'utilisateur est l'auteur de la ressource
+        if (req.user.id !== resource.authorId) {
+            return res.status(403).json({ message: "Vous n'êtes pas autorisé à effectuer cette action sur cette ressource." });
+        }
 
-module.exports = { protect, restrictTo, restrictToOwnUser }
+        // Si l'utilisateur est l'auteur de la ressource, passez à la prochaine fonction de middleware
+        next();
+    };
+};
+
+module.exports = { protect, restrictTo, restrictToOwnUser };
