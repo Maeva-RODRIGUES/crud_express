@@ -73,7 +73,7 @@ const resetDb = process.env.NODE_ENV === "development"
               //      console.log(error)
          //       })
        // })
-   // })
+  //})
    .catch((error) => {
        console.log(error)
    })
