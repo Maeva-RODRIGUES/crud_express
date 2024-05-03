@@ -50,33 +50,33 @@ Review.belongsTo(User)
 
 const resetDb = process.env.NODE_ENV === "development"
 
-sequelize.sync({ force: resetDb })
-    .then(() => {
-        mockCoworkings.forEach(coworking => {
-            Coworking.create(coworking)
-                .then()
-                .catch(error => {
-                    console.log(error)
-                })
-        })
+//sequelize.sync({ force: resetDb })
+  //  .then(() => {
+     //   mockCoworkings.forEach(coworking => {
+     //       Coworking.create(coworking)
+        //        .then()
+            //    .catch(error => {
+           //         console.log(error)
+           //     })
+      //  })
 
-        Role.create({ id: 1, label: "superadmin" })
-        Role.create({ id: 2, label: "admin" })
-        Role.create({ id: 3, label: "user" })
+     //   Role.create({ id: 1, label: "superadmin" })
+       // Role.create({ id: 2, label: "admin" })
+       // Role.create({ id: 3, label: "user" })
 
-        mockUsers.forEach(async user => {
-            const hash = await bcrypt.hash(user.password, 10)
-            user.password = hash
-            User.create(user)
-                .then()
-                .catch(error => {
-                    console.log(error)
-                })
-        })
-    })
-    .catch((error) => {
-        console.log(error)
-    })
+       // mockUsers.forEach(async user => {
+        //    const hash = await bcrypt.hash(user.password, 10)
+         //   user.password = hash
+         //   User.create(user)
+         //       .then()
+         //       .catch(error => {
+              //      console.log(error)
+         //       })
+       // })
+   // })
+   .catch((error) => {
+       console.log(error)
+   })
 
 sequelize.authenticate()
     .then(() => console.log('La connexion à la base de données a bien été établie.'))
